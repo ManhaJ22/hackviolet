@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pregnancy Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #d6c5dd;
+        }
+
+        .introduction {
+            color: rgb(0, 0, 0);
+            margin-left: 50px;
+            margin-right: 50px;
+            margin-top: 15px;
+            font-family: monospace;
+        }
+
+
+        .text-center {
+            margin-top: 5px;
+        }
+
+
+        .navbar {
+            font-family: monospace;
+        }
+
+
+        .navbar-brand {
+            background-color: rgb(50, 37, 62);
+            padding: 10px;
+            color: rgb(255, 255, 255);
+        }
+
+
+        .img-fluid {
+            height: 420px;
+            width: 550px;
+            margin-top: 40px;
+        }
+
+        .image-text-wrapper {
+            font-family: monospace;
+            position: sticky;
+            display: inline-block; /* Makes the container fit the content */
+        }
+
+        .text-over-image {
+            position: absolute;
+            top: 50%; /* Adjust the position as necessary */
+            left: 50px;
+            transform: translate(-2%, -50%);
+            color: white; /* Text color */
+        }
+
+        .stats{
+            margin-right: 30px;
+            margin-left: 30px;
+            margin-top: 30px;
+            font-family: monospace;
+        }
+
+        .paragraph {
+            margin-right: 30px;
+            margin-left: 40px;
+            margin-top: 10px;
+            font-family: monospace;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Glowing Journey</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/calendar">Calendar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pregnancy-tracker">Pregnancy Tracking</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/nutrition">Nutrition</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    
+    <div class="image-text-wrapper">
+        <img src="https://www.verywellhealth.com/thmb/Xxy8JGQKUz8ckSzauvBEzOEJoj8=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-1288913695-230c3b035bce4442b29e1598a492022d.jpg" 
+        alt="Cover Image" width = 1410px height = 649px>
+        <div class="text-over-image">
+                Even with the advancement of technology,<br> its challenging to find a website that provides<br> a calendar that
+            allows women to track their<br> important events, learn about the baby,<br> pregnancy symptoms, and nutrition. 
+        </div>
+    </div>
+
+    <div class = "graphs">
+        <h2 class = "stats">
+            Pregnancy Statistics
+        </h2>
+        <h6 class ="paragraph">
+        According to BlueCross BlueShield, 16% of women have complications in their pregnancy. Of the
+        16%, 14% did not get prenatal care in their first trimester. One third of the 16% also received less than
+        the recommend number of prenatal visits; a quarter of the women had complications during childbirth. With an
+        easy way to track doctors appointment, how their baby should be growing, and ways to monitor how your body
+        should react to pregnancy they can have a safer pregnancy.
+        </h6>
+        <div class="row justify-content-center">
+        <div class="col-5">
+            <img src="https://www.statista.com/graphic/1/1142836/overall-pregnancy-and-childbirth-complication-rates-us.jpg"
+                class="img-fluid" alt="graph 1, complications">
+        </div>
+        <div class="col-5">
+            <img src="https://www.mbrcinc.org/wp-content/uploads/2019/01/causes-pregnancy-related-death-2017_600px_1-medium.png" class="img-fluid"
+                alt="graph 2, death">
+        </div>
+
+        <div class="spacing">
+            <h2><br></h2>
+        </div>
+    </div>
+</div>
+    <break>
+    </break>
+
+</body>
+</html>
