@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pregnancy Tracking</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        body {
+            font-family: monospace;
+            font-size: 1.4rem;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(195, 149, 215);
+        }
+
+        .container-fluid {
+            font-size: 1.04rem;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+            color: black;
+            border-color: white;
+            border-radius: 2px;
+        }
+
+        form {
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #ffffffe2;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        option[value="conception"], option[value="lmp"] {
+            font-family: monospace;
+            font-size: 1.1rem;
+            
+        }
+
+        #calculationType option[value=""][disabled][selected] {
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+
+
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        select,
+        input[type="date"],
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            font-family: monospace;
+            font-size: 1.5rem;
+            background-color: rgb(12, 53, 71);
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: rgb(16, 12, 29);
+        }
+
+        #response {
+            width: 80%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        <!-- Container-->
+        #weekData {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            align-items: flex-start;
+            gap: 20px;
+            height: fit-content;
+            max-width: 800px; 
+            margin: 0 auto; 
+        }
+
+        .horizontalFlex {
+            display: flex;
+            
+        }
+
+        #weekData p {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .card {
+            flex-basis: 50%;
+            margin: 10px; 
+            background-color:  rgb(12, 53, 71);
+            padding: 20px; 
+            box-sizing: border-box; 
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .bolded-titles {
+            font-weight: 700;
+            font-size: 1.3em;
+        }
+
+        .images {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .images img {
+            width: 48%;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">Growing Journey</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav" >
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/calendar">Calendar</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/pregnancy-tracker">Pregnancy Tracking</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/register">Register</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+    <h2>Pregnancy Tracking</h2>
+    <form id="dateCalculationForm">
+        <label for="calculationType">Calculation Type:</label>
+        <select id="calculationType" name="calculationType">
+            <option value="" disabled selected>Select Calculation Type</option>
+            <option value="conception">Conception Date</option>
+            <option value="lmp">Last Menstrual Period Date</option>
+        </select>
+        <br><br>
+        <label for="actualDate">Actual Date:</label>
+        <input type="date" id="actualDate" name="actualDate">
+        <br><br>
+        <input type="submit" value="Submit">
+    </form>
+    
+
+    <!-- Div to display the response -->
+    <div id="response"></div>
+
+    <!-- Include jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Script to handle form submission -->
+    <script>
+        $(document).ready(function () {
+            $('#dateCalculationForm').submit(function (event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: '/calculate',
+                    data: formData,
+                    dataType: 'json',
+                    success: function (response) {
+                        // Update the content of the response div with the results
+                        $('#response').html(`
+                            <p>Your Due date is: ${new Date(response.dueDate).toDateString()}</p>
+                            <p>You are ${response.weeksPregnant} weeks pregnant.</p>
+                            <div id="weekData">
+                                <div class="horizontalFlex">
+                                    <div class="card">
+                                        <p class="bolded-titles">Baby Development: </p>
+                                        <p>${response.weekData.babyDevelopment}</p>
+                                    </div>
+                                    
+                                    <div class="card">
+                                        <p class="bolded-titles">Pregnancy Symptoms:</p>
+                                        <ul>
+                                            ${response.weekData.pregnancySymptoms.map(symptom => `<li>${symptom}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <p class="bolded-titles">Pregnancy Checklist:</p>
+                                    <ul>
+                                        ${response.weekData.pregnancyChecklist.map(item => `<li>${item}</li>`).join('')}
+                                    </ul>
+                                </div>
+                                <div class="images">
+                                    <img src="${response.weekData.images[0]}" alt="Week ${response.weekData.week} Image">
+                                    <img src="${response.weekData.images[1]}" alt="Week ${response.weekData.week} Image">
+                                </div>
+                            </div>
+                        `);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

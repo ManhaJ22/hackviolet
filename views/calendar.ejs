@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Calendar</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <style>
+    body {
+      font-family: monospace;
+      text-align: center;
+      background-image: url("https://img.freepik.com/premium-vector/dotted-simple-seamless-vector-pattern_547648-1241.jpg");
+    }
+
+    .calendar-body .navbar {
+      font-family: monospace;
+    }
+
+    .calendar-body .navbar-brand {
+      background-color: rgb(50, 37, 62);
+      padding: 10px;
+      color: rgb(255, 255, 255);
+    }
+
+    .calendar-body .text-center {
+      margin-top: 5px;
+    }
+
+    .calendar {
+      width: 90%;
+      height: 580px;
+      margin: 20px auto;
+      border: 3px solid rgb(50, 37, 62);
+      box-shadow: 7px 10px rgb(50, 37, 62);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgb(195, 149, 215);
+      text-align: center;
+      padding: 10px;
+      font-weight: bold;
+    }
+
+    .days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      background-color: white;
+    }
+
+    .day {
+      height: 100px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+      cursor: pointer;
+      background-color: white;
+    }
+
+    .event {
+      background-color: rgb(50, 37, 62);
+      padding: 2px;
+      color: white;
+      font-size: 12px;
+      margin-top: 5px;
+      border-radius: 2px;
+    }
+
+    .modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.modal-content button {
+  padding: 10px 15px; /* Adjusted button size */
+  font-family: monospace;
+  cursor: pointer;
+  background-color: rgb(195, 149, 215);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.modal-content button:last-child {
+  background-color: rgb(195, 149, 215);
+}
+
+
+
+#event-input {
+  height: 40px;
+  width: 100%; /* Make the input take the full width */
+  padding: 10px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+    #current-month {
+      font-size: 20px;
+      color: white;
+    }
+
+    .navigation-btn {
+      cursor: pointer;
+    }
+
+    .navbar {
+      font-family: monospace;
+    }
+  </style>
+</head>
+
+<body class="calendar-body">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Growing Journey</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/calendar">Calendar</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/pregnancy-tracker">Pregnancy Tracking</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/register">Register</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <h1>Appointments</h1>
+
+  <div class="calendar">
+    <div class="header">
+      <span class="navigation-btn" onclick="previousMonth()">&#9664;</span>
+      <span id="current-month"></span>
+      <span class="navigation-btn" onclick="nextMonth()">&#9654;</span>
+    </div>
+    <div class="days" id="calendar-body"></div>
+  </div>
+
+  <div class="modal" id="event-modal">
+    <div class="modal-content">
+      <h2>Add Event</h2>
+      <input type="text" id="event-input" placeholder="Event Description" />
+      <button onclick="addEvent()">Add</button>
+      <button onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    var currentDate = new Date(2024, 0);
+    var currentYear = currentDate.getFullYear();
+    var selectedDay;
+
+    function generateCalendar(year, month) {
+      var firstDay = new Date(year, month, 1).getDay();
+      var lastDay = new Date(year, month + 1, 0).getDate();
+      var calendarBody = document.getElementById('calendar-body');
+      var currentMonthElement = document.getElementById('current-month');
+      currentMonthElement.textContent = new Intl.DateTimeFormat('en-US', {
+        month: 'long',
+        year: 'numeric'
+      }).format(currentDate);
+
+      calendarBody.innerHTML = '';
+
+      for (let i = 0; i < firstDay; i++) {
+        var emptyDay = document.createElement('div');
+        emptyDay.className = 'day';
+        calendarBody.appendChild(emptyDay);
+      }
+
+      for (let i = 1; i <= lastDay; i++) {
+        var day = document.createElement('div');
+        day.className = 'day';
+        day.textContent = i;
+        day.addEventListener('click', function() {
+          selectedDay = i;
+          openModal();
+        });
+        calendarBody.appendChild(day);
+      }
+    }
+
+    function openModal() {
+      document.getElementById('event-modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('event-modal').style.display = 'none';
+    }
+
+    function addEvent() {
+      var eventInput = document.getElementById('event-input');
+      var eventDescription = eventInput.value;
+
+      if (eventDescription.trim() !== '') {
+        var dayElement = document.querySelector('.day:nth-child(' + (selectedDay + 1) + ')');
+        var eventDiv = document.createElement('div');
+        eventDiv.className = 'event';
+        eventDiv.textContent = eventDescription;
+
+        dayElement.appendChild(eventDiv);
+      }
+
+      closeModal();
+      eventInput.value = '';
+    }
+
+    function previousMonth() {
+      currentDate.setMonth(currentDate.getMonth() - 1);
+      generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+    }
+
+    function nextMonth() {
+      currentDate.setMonth(currentDate.getMonth() + 1);
+      generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+    }
+
+    generateCalendar(currentYear, currentDate.getMonth());
+  </script>
+
+</body>
+
+</html>
