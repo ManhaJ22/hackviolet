@@ -866,6 +866,10 @@ app.get("/login", function(req, res) {
     res.render("login.ejs");
 });
 
+app.get("/nutrition", function(req, res) {
+    res.render("nutrition.ejs");
+});
+
 app.post("/calculate", async function (req, res) {
     const request = req.body;
     let dueDate;
